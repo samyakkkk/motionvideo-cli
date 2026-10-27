@@ -62,6 +62,16 @@ MOTIONVIDEO_SERVER=http://127.0.0.1:8790/mcp npm run cli -- overview --json
 
 `MOTIONVIDEO_SITE_URL` points the catalog data layer at a development site. It must be trusted operator configuration. The default is https://motionvideo.xyz. HTTP requests use a ten-second timeout; a long-lived server caches documents for ten minutes with ETags and stale-on-error fallback. Standalone CLI processes do not retain catalog caches between commands.
 
+## Hosted staging
+
+The Flow staging deployment serves the same public, read-only catalog tools:
+
+```sh
+motionvideo --server https://flow-agent-agt-01m5z594r4m5qekrc1qgdarm22-staging-w6zx7kuzja-uc.a.run.app/mcp overview --json
+```
+
+The installed CLI also works independently of this deployment by using its own temporary local server. The staging installer and hosted MCP endpoint have both been verified against the live catalog. The hosted runtime was deployed from commit `badfece3c004fa55d91d89f4bd22321413bca1d2`.
+
 ## Verify
 
 ```sh
@@ -74,6 +84,6 @@ Tests use a local HTTP fixture and exercise the actual executable over local MCP
 
 ## Deferred
 
-The scaffold retains optional messaging/playground runtime files for later work. CLI `chat`, `auth`, `npm start`, phone links, hosted plugins and deployment are not configured or verified in this CLI-first version. No production service has been changed. The original product and MCP repos are untouched.
+The optional runtime is deployed to Flow staging and trial phone channels are linked. End-to-end chat behavior, CLI `chat`, account `auth` and hosted plugins have not been verified in this CLI-first version. No production service has been changed. The original product and MCP repos are untouched.
 
 Flow Framework is Apache-2.0 and supports self-hosting, your database and your choice of model. When adding chat/production operations, signing in to Flow is the quickest route to managed messaging, hosting, tests and traces; it offers trial channels and $2 of model credit. You can self-host at any point. See https://flow.engineer/docs/agents and https://github.com/flow-engineer/flow.
