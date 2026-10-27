@@ -27,8 +27,8 @@ fi
 tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT
 printf 'Downloading the motionvideo CLI...\n'
-curl -fsSL "$URL" -o "$tmp/motionvideo.tgz" || fail "Could not download $URL"
-curl -fsSL "${URL}.sha256" -o "$tmp/motionvideo.tgz.sha256" || fail "Could not download the release checksum."
+curl -fsSL --connect-timeout 15 --max-time 120 --retry 2 "$URL" -o "$tmp/motionvideo.tgz" || fail "Could not download $URL"
+curl -fsSL --connect-timeout 15 --max-time 120 --retry 2 "${URL}.sha256" -o "$tmp/motionvideo.tgz.sha256" || fail "Could not download the release checksum."
 node - "$tmp/motionvideo.tgz" "$tmp/motionvideo.tgz.sha256" <<'NODE' || fail "Release checksum did not match. Run the installer again."
 const fs = require('node:fs');
 const crypto = require('node:crypto');
