@@ -1,0 +1,51 @@
+// Builds the agent. The playground (main.ts) and the tests build it the same way; tests pass their own
+// model, events and (simulated) tools.
+
+import { fileURLToPath } from "node:url";
+import { terminalServer } from "@flow-engineer/flow/mcp";
+import { createAgent, customUI, openAICompatible, sms, whatsapp, type Agent, type Channel, type EventSink, type HostOptions, type Model, type Tool } from "@flow-engineer/flow";
+import { tools } from "./tools.ts";
+
+export interface BuildOptions {
+  model?: Model;
+  events?: EventSink[];
+  tools?: Tool[];
+  /** Channels that are connected, such as Telegram through Flow Messaging (main.ts adds them when .env has its key); one named whatsapp replaces the unconnected one. */
+  channels?: Channel[];
+  /** What the place running it supplies (Flow's hosting: its store and Flow Messaging; Cloudflare: files and a database), passed to createAgent as it is. */
+  host?: HostOptions;
+}
+
+export { tools };
+
+// Messaging and web chat are not connected yet, so every provider refuses to send. Test
+// people write from the playground, and replies to them go back there, never through these.
+const notConnected = async () => {
+  throw new Error("not connected yet: only test people in the playground reach the agent for now");
+};
+const provider = { sendMessage: notConnected, react: notConnected, typing: notConnected, markRead: notConnected, status: notConnected };
+
+export function buildAgent(options: BuildOptions = {}) {
+  const connected = options.channels ?? [];
+  // Hosted on Flow Messaging, its channels are the real ones (createAgent adds them from host.messaging).
+  const unconnected = options.host?.messaging ? [] : [whatsapp(provider), sms(provider), customUI("web", provider)].filter((c) => !connected.some((k) => k.name === c.name));
+  // A future `npm run cli -- chat` can talk to the agent here. Public catalog access needs no accounts,
+  // guest; with accounts, pass auth (the flow-framework-auth skill), and guests: true to keep guests.
+  const terminal = terminalServer({ agent: () => agent });
+  const agent: Agent = createAgent({
+    dir: fileURLToPath(new URL("../agent", import.meta.url)),
+    host: options.host,
+    model: options.model ?? openAICompatible(),
+    tools: options.tools ?? tools,
+    events: options.events ?? [],
+    channels: [...unconnected, ...connected, terminal.channel],
+    routes: { [terminal.path]: (request) => terminal.fetch(request) },
+    testPeople: [
+      { name: "Maria", phone: "+15555550101" },
+      { name: "Sam", phone: "+15555550102" },
+      { name: "Priya", phone: "+15555550103" },
+    ],
+    timeZone: "America/New_York",
+  });
+  return agent;
+}

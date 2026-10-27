@@ -1,0 +1,10 @@
+tool: get-video
+behaviour: Returns the full real catalog entry by slug, original prompt only if shared, media URLs, creator credit and category neighbours. Missing prompt remains absent. No video generation.
+responses:
+  - when: Unknown video slug
+    latency_ms: 100
+    input: { slug: unknown }
+    error: No catalog video with slug unknown. Use search-videos to find one.
+  - when: Catalog unavailable and no cached copy
+    latency_ms: 10000
+    error: The motionvideo.xyz catalog is temporarily unavailable. Retry in a moment.

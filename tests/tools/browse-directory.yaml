@@ -1,0 +1,10 @@
+tool: browse-directory
+behaviour: Chooses tools by default or studios; applies AND keywords and case-insensitive exact category. Maximum 120 results, default 24. Returns categories, total and shown.
+responses:
+  - when: No matching directory items
+    latency_ms: 100
+    input: { section: tools, query: nonexistent }
+    output: { section: tools, categories: [AI, Editor], entries: [], total: 0, shown: 0 }
+  - when: Directories unavailable and no cached copy
+    latency_ms: 10000
+    error: The motionvideo.xyz catalog is temporarily unavailable. Retry in a moment.

@@ -1,0 +1,10 @@
+tasks:
+  search-videos: signed_out
+  get-video: signed_out
+  list-categories: signed_out
+  browse-directory: signed_out
+  catalog-overview: signed_out
+  remix-video: signed_out
+rules:
+  - All six tasks are read-only and need no product login or model key.
+  - No account, admin, payment or submission endpoints are exposed.

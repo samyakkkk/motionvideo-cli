@@ -1,0 +1,41 @@
+arazzo: 1.0.0
+info:
+  title: Public catalog CLI workflows
+  version: 0.1.0
+sourceDescriptions:
+  - name: catalog
+    url: ./openapi.yaml
+    type: openapi
+workflows:
+  - workflowId: search-videos
+    description: Load catalog, apply existing all-word filters, sort, limit and report total/shown.
+    steps:
+      - stepId: load
+        operationId: getCatalog
+  - workflowId: get-video
+    description: Load catalog, find slug, retain original prompt and calculate category neighbours; fail when absent.
+    steps:
+      - stepId: load
+        operationId: getCatalog
+  - workflowId: list-categories
+    description: Load catalog and count videos in each existing category.
+    steps:
+      - stepId: load
+        operationId: getCatalog
+  - workflowId: browse-directory
+    description: Load directories, choose tools or studios, apply keyword/category filters and report total/shown.
+    steps:
+      - stepId: load
+        operationId: getDirectories
+  - workflowId: catalog-overview
+    description: Load both documents and return category, directory and public-prompt counts.
+    steps:
+      - stepId: videos
+        operationId: getCatalog
+      - stepId: directories
+        operationId: getDirectories
+  - workflowId: remix-video
+    description: Load the selected video; assemble a credited brief from its real prompt and optional direction. Never synthesize an original prompt.
+    steps:
+      - stepId: load
+        operationId: getCatalog

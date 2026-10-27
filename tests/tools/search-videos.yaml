@@ -1,0 +1,10 @@
+tool: search-videos
+behaviour: All-word keyword search with optional category/type, newest or oldest ordering, max 30 results. total is before limiting; shown is returned length. Read-only and public.
+responses:
+  - when: No matching videos
+    latency_ms: 100
+    input: { query: nonexistent }
+    output: { total: 0, shown: 0, videos: [] }
+  - when: Catalog unavailable and no cached copy
+    latency_ms: 10000
+    error: The motionvideo.xyz catalog is temporarily unavailable. Retry in a moment.

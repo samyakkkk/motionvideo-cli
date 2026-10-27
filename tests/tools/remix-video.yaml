@@ -1,0 +1,10 @@
+tool: remix-video
+behaviour: Returns slug, pageUrl, promptShared and a credited brief with the real original prompt when available. Without a direction asks for brand, copy, palette, duration and aspect ratio. No model calls or rendered video.
+responses:
+  - when: Unknown video slug
+    latency_ms: 100
+    input: { slug: unknown }
+    error: No catalog video with slug unknown. Use search-videos to find one first.
+  - when: Catalog unavailable and no cached copy
+    latency_ms: 10000
+    error: The motionvideo.xyz catalog is temporarily unavailable. Retry in a moment.

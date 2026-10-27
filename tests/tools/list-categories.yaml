@@ -1,0 +1,6 @@
+tool: list-categories
+behaviour: Returns all eleven published category IDs, labels, descriptions, counts and canonical URLs. Counts include every video in that category.
+responses:
+  - when: Catalog unavailable and no cached copy
+    latency_ms: 10000
+    error: The motionvideo.xyz catalog is temporarily unavailable. Retry in a moment.

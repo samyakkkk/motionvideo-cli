@@ -1,0 +1,63 @@
+openapi: 3.1.0
+x-flow-draft: true
+info:
+  title: MotionVideo existing public catalog endpoints
+  version: 0.1.0
+servers:
+  - url: https://motionvideo.xyz
+security: []
+paths:
+  /api/catalog:
+    get:
+      operationId: getCatalog
+      description: Whole public catalog document; consumers filter locally.
+      responses:
+        '200':
+          description: Public catalog JSON, with ETag caching.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  importedAt: { type: string }
+                  videos:
+                    type: array
+                    items:
+                      type: object
+                      description: Video fields are recorded in data.md and src/catalog.ts.
+                      additionalProperties: true
+        '304':
+          description: ETag unchanged; reuse the previously fetched document.
+  /api/catalog/directories:
+    get:
+      operationId: getDirectories
+      description: Whole tools and studios document; consumers filter locally.
+      responses:
+        '200':
+          description: Directory JSON, with ETag caching.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  importedAt: { type: string }
+                  tools: { $ref: '#/components/schemas/Directory' }
+                  studios: { $ref: '#/components/schemas/Directory' }
+        '304':
+          description: ETag unchanged; reuse the previously fetched document.
+components:
+  schemas:
+    Directory:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            type: object
+            properties:
+              id: { type: string }
+              name: { type: string }
+              description: { type: string }
+              category: { type: string }
+              url: { type: string }
+              cover: { type: string }

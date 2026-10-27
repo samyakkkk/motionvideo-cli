@@ -1,0 +1,6 @@
+tool: catalog-overview
+behaviour: Combines full catalog and directory documents into video, public-prompt, category and directory counts; never treats a fetch failure as an empty catalog.
+responses:
+  - when: Either catalog document is unavailable and no cached copy
+    latency_ms: 10000
+    error: The motionvideo.xyz catalog is temporarily unavailable. Retry in a moment.

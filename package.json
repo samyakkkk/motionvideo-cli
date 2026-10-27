@@ -1,0 +1,43 @@
+{
+  "name": "motionvideo",
+  "displayName": "MotionVideo",
+  "version": "0.1.0-staging.1",
+  "private": true,
+  "description": "MotionVideo catalog CLI: search videos, read prompts, browse tools and studios, and prepare credited remix briefs.",
+  "type": "module",
+  "bin": {
+    "motionvideo": "dist/cli.js"
+  },
+  "engines": {
+    "node": ">=22.18"
+  },
+  "files": ["dist", "agent", "README.md", "THIRD_PARTY_NOTICES.md"],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/samyakkkk/motionvideo-cli.git"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "prepack": "npm run build",
+    "start": "node --env-file-if-exists=.env src/main.ts",
+    "mcp": "node --env-file-if-exists=.env src/mcp.ts",
+    "cli": "node --env-file-if-exists=.env src/cli.ts",
+    "test": "node --test tests/cli.test.ts",
+    "test:agent": "flow test",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@flow-engineer/flow": "0.10.5",
+    "@modelcontextprotocol/client": "2.3.1",
+    "@modelcontextprotocol/server": "2.3.1",
+    "@stricli/core": "1.3.0",
+    "marked": "12.0.2",
+    "marked-terminal": "7.3.0",
+    "oidc-provider": "9.12.2",
+    "@mariozechner/pi-tui": "0.73.1"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "typescript": "^7.0.2"
+  }
+}
